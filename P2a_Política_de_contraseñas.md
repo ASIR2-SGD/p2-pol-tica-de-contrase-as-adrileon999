@@ -12,6 +12,32 @@ Por defecto, la mayoría de sistemas operativos, vienene con una política de co
 
 * * *
 
+## Introducción
+
+El sistema de contraseñas en Linux es seguro y funciona de la siguiente manera:
+
+1. **Archivos clave**:
+   - **/etc/passwd**: Contiene información básica del usuario, pero no las contraseñas.
+   - **/etc/shadow**: Almacena contraseñas cifradas usando algoritmos de hash (SHA-512, por ejemplo).
+
+2. **Hashing y salting**:
+   - Las contraseñas se cifran con un hash (SHA-512, etc.) y se les añade una **sal** (valor aleatorio) para hacerlas únicas, incluso si dos usuarios tienen la misma contraseña.
+
+3. **Autenticación PAM**:
+   - Linux usa **PAM (Pluggable Authentication Modules)** para gestionar la autenticación y aplicar políticas de seguridad. PAM es un sistema modular en Linux que gestiona la autenticación de usuarios, permitiendo personalizar políticas de seguridad.
+
+PAM utiliza módulos que definen cómo se autentican los usuarios. Cada servicio (como SSH o login) tiene su propia configuración en /etc/pam.d/.
+
+Las categorías principales son los grupos que organizan los módulos según su función dentro del proceso de autenticación y manejo de cuentas:
+
+- auth: Verifica contraseñas.
+- account: Gestiona permisos de cuenta.
+- password: Reglas para cambiar contraseñas.
+- session: Controla inicio/cierre de sesión.
+
+4. **Políticas de seguridad**:
+   - Se pueden configurar reglas como la expiración de contraseñas, número de intentos fallidos y requisitos de complejidad.
+
 ## Desarrollo
 
 1. Lo fundamental para empezar a trabajar es instalar lo siguiente.
