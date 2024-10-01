@@ -50,39 +50,34 @@ El sistema de contraseñas en Linux es seguro y funciona de la siguiente manera:
     $ sudo apt install libpwquality-tools
 ```
 
-2. Para empezar a asignar políticas debemos acceder al fichero **/etc/security/pwquality.conf**. En este encontraremos varias líneas comentadas, explicándonos las distintas configuraciones y como usarlas.
+2. Para empezar a asignar políticas debemos acceder al fichero **/etc/security/pwquality.conf**. En este encontraremos varias líneas comentadas, explicándonos las distintas configuraciones y como usarlas. Para aplicar una política descomentamos su linea y cambiamos los valores a nuestro gusto.
 
 ```bash
     $ sudo nano /etc/security/pwquality.conf
 ```
 
-3. Para demostrar su correcto uso yo voy a usar la siguiente configuración, descomentando las líneas que me interesan y ajustandole a los parámetros que necesite.
+3. Una configuración de ejemplo sería la siguiente, que es la que voy a usar para hacer el ejemplo de contraseña de dificultad media en el apartado posterior.
 
  ```bash
-    minlen = 12
-    minclass = 3
-    maxrepeat = 2
-    difok = 3
+    ucredit = -1
+    dcredit = -1
+    minlen = 6
 ```
-Con esto habremos configurado que la contraseña sea de mínimo 12 caracteres, que requiere de al menos 3 clases de caracteres diferentes, un carácter solo se puede usar 2 veces de forma consecutiva y al cambiar la contraseña debe haber 3 caracteres diferentes a la anterior.
 
 ## Comprobación
 
-Su comprobación es fácil, simplemente usando el comando pwscore podremos probar diferentes contraseñas
+Su comprobación es fácil, simplemente usando el comando pwscore y ajustando los parámetros de configuración podremos probar diferentes contraseñas.
 
-```bash
-    $ pwscore
-        h0lAh0lAh0lA
-        Falló la comprobación de calidad de la contraseña:
-        La contraseña no supera la verificación de diccionario - No contiene suficientes caracteres DIFERENTES
-    $ pwscore
-        h0lAqU3T4l
-        Falló la comprobación de calidad de la contraseña:
-        La contraseña tiene menos de 12 caracteres.
-    $ pwscore
-        h0lAqU3T4l3st4m0s
-        63
-    $ pwscore
-        38jd73n10dj38df11SDF12
-        100
-```
+| Dificultad   | Score | Longitud Mínima | Requisitos                       | Ejemplos              |
+|--------------|-------|-----------------|----------------------------------|-----------------------|
+| Fácil        | 40    | Sin mínimo      | Sin requisitos                   | Hola1234              |
+| Media        | 40-50 | 6               | `ucredit = -1`, `dcredit = -1`  | Pdj3wqd               |
+| Difícil      | 50-80 | 8               | `ucredit = -1`, `ocredit = -1`  | Secr3tP@ss        |
+| Muy Difícil  | > 80  | 10              | `ucredit = -1`, `dcredit = -1`  | Str0ngP@ssw0rd2024    |
+
+Requisitos usados:
+
+   - ucredit: Mayúsculas requeridas (-1: al menos 1).
+   - ocredit: Caracteres especiales (-1: al menos 1).
+   - dcredit: Dígitos requeridos (-1: al menos 1).
+
